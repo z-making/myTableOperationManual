@@ -1,0 +1,19 @@
+@use './flex.scss';
+@use './height.scss';
+@use './width.scss';
+@use './margin.scss';
+@use './padding.scss';
+@use './text.scss';
+@use './utils.scss';
+
+
+// 动态设置 rem 基准值
+html {
+  font-size: calc(100vw / 1920 * 16); // 基于 1920 宽度的设计稿，1rem = 16px
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}

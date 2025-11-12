@@ -1,0 +1,122 @@
+.text-ellipsis{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 不换行 */
+.no-wrap {
+  white-space: nowrap;
+}
+
+/* 自动换行 */
+.t-wrap {
+  white-space: normal;
+}
+
+// 字体大小
+
+.t-10{
+    font-size: 10px;
+}
+
+.t-12{
+    font-size: 12px;
+}
+
+.t-14{
+    font-size: 14px;
+}
+
+.t-15{
+    font-size: 15px;
+}
+
+.t-16{
+    font-size: 16px;
+}
+
+.t-17{
+    font-size: 17px;
+}
+
+.t-18{
+    font-size: 18px;
+}
+
+.t-20{
+    font-size: 20px;
+}
+
+.t-22{
+    font-size: 22px;
+}
+
+.t-40{
+    font-size: 40px;
+}
+
+// 字体位置
+.t-c{
+    text-align: center;
+}
+
+.t-l{
+    text-align: left;
+}
+
+.t-r{
+    text-align: right;
+}
+
+// 字体粗细
+.t-b{
+    font-weight: bold;
+}
+.t-n{
+    font-weight: normal;
+}
+
+.tw-100{
+    font-weight: 100;
+}
+
+.tw-200{
+    font-weight: 200;
+}
+
+.tw-300{
+    font-weight: 300;
+}
+
+.tw-400{
+    font-weight: 400;
+}
+
+.tw-500{
+    font-weight: 500;
+}
+
+.tw-600{
+    font-weight: 600;
+}
+
+.tw-700{
+    font-weight: 700;
+}
+
+.tw-800{
+    font-weight: 800;
+}
+
+.tw-900{
+    font-weight: 900;
+}
+
+// 字体颜色
+.t-fff{
+    color: #fff;
+}
+.t-000{
+    color: #000;
+}

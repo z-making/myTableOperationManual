@@ -17,5 +17,9 @@ export default defineConfig({
   },
   server: {
     host:true
+  },
+  base: "/myTableOperationManual/",
+  build: {
+    outDir: "docs"
   }
 })

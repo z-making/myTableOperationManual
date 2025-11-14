@@ -78,8 +78,9 @@ const content = marked.parse(`
     v-model:pageNum // 更新pageNum
     v-model:pageSize. // 更新pageSize
     v-model:select // 更新select
-    
+
 `)
+console.log(import.meta.env.VITE_OUTPUT_DIR,'meta');
 </script>
 
 <style scoped>

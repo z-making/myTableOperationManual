@@ -1,20 +1,4 @@
-<template>
-    <div  class=" markdown-body">
-        <!-- <MarkdownText :content="content"/> -->
-         <div v-html="content"></div>
-    </div>
-</template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router';
-import MarkdownText from '@/components/MarkdownText.vue';
-import { ref } from 'vue';
-import { marked } from 'marked';
-// 引入 GitHub 风格样式
-import 'github-markdown-css'; 
-const router = useRouter()
-
-const content = marked.parse(`
+import{d as a,c as t,a as l,u as o,b as n,o as s}from"./index-BQ3oQrcT.js";import{d as r}from"./github-markdown-CDBrfog2.js";const i={class:"markdown-body"},p=["innerHTML"],b=a({__name:"index",setup(m){n();const e=r.parse(`
     myTable的使用方法 
     1. 引入：已全局引入，直接使用就好
     2. 使用
@@ -79,9 +63,4 @@ const content = marked.parse(`
     v-model:pageSize. // 更新pageSize
     v-model:select // 更新select
 
-`)
-</script>
-
-<style scoped>
-
-</style>
+`);return(c,g)=>(s(),t("div",i,[l("div",{innerHTML:o(e)},null,8,p)]))}});export{b as default};

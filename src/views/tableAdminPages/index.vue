@@ -1,6 +1,6 @@
 <template>
     <div>
-         测试
+        使用教程
     </div>
 </template>
 

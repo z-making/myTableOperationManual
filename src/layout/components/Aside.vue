@@ -1,5 +1,5 @@
 <template>
-    <div class="wb-10">
+    <div class="w-200">
         <el-menu
             default-active="1"
             class="el-menu-vertical-demo"

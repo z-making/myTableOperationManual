@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as p}from"./index-BXPJdOPe.js";const s={class:"markdown-body",style:{padding:"20px"}},i=["innerHTML"],m=l({__name:"basic",setup(u){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as s}from"./index-BEcROL9u.js";const p={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],i=l({__name:"basic",setup(m){const e=a.parse(`
 # 基础用法
 
 本章节介绍 myTable 组件的各种基础功能和列类型配置。
@@ -76,9 +76,9 @@ import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u 
 
 \`\`\`vue
 :tableColumn="[
-  { 
-    label: '商品图', 
-    prop: 'mainImage', 
+  {
+    label: '商品图',
+    prop: 'mainImage',
     img: true,
     list: ['image1.jpg', 'image2.jpg', 'image3.jpg']
   }
@@ -134,7 +134,9 @@ import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u 
 
 ## 插槽列
 
-自定义列内容，适用于复杂的展示需求。
+自定义列内容,适用于复杂的展示需求。
+
+### 基础用法
 
 \`\`\`vue
 <myTable
@@ -155,6 +157,25 @@ import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u 
 </myTable>
 \`\`\`
 
+### 简化写法（推荐）
+
+\`slot\` 属性可以直接传入插槽名称字符串，无需额外指定 \`name\` 属性：
+
+\`\`\`vue
+<myTable
+  :tableData="tableData"
+  :tableColumn="[
+    { label: '用户信息', prop: 'userInfo', slot: 'userInfo' }
+  ]"
+>
+  <template #userInfo="row">
+    <div>{{ row.name }}</div>
+  </template>
+</myTable>
+\`\`\`
+
+> 💡 **提示**：当 \`slot\` 为字符串时，会自动作为插槽名称使用，更加简洁
+
 ## 表格索引
 
 显示行号：
@@ -169,7 +190,9 @@ import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u 
 
 ## 多选功能
 
-启用行选择功能：
+启用行选择功能，支持跨页保留选中状态。
+
+### 基础用法
 
 \`\`\`vue
 <myTable
@@ -188,6 +211,42 @@ const handleSelect = (selection, row) => {
   console.log('已选择的行:', selection)
 }
 \`\`\`
+
+### 跨页保留选中
+
+组件内置支持跨页保留选中状态，默认使用 \`id\` 字段作为唯一标识：
+
+\`\`\`javascript
+const tableData = ref([
+  { id: 1, name: '张三', age: 18 },
+  { id: 2, name: '李四', age: 22 }
+])
+\`\`\`
+
+如果数据使用其他字段作为唯一标识，可以通过 \`uniqueValue\` 属性指定：
+
+\`\`\`vue
+<myTable
+  :tableData="tableData"
+  :tableColumn="tableColumn"
+  :selection="true"
+  uniqueValue="uid"
+  v-model:select="selectedRows"
+/>
+\`\`\`
+
+\`\`\`javascript
+// 数据中使用 uid 作为唯一标识
+const tableData = ref([
+  { uid: 1001, name: '张三', age: 18 },
+  { uid: 1002, name: '李四', age: 22 }
+])
+\`\`\`
+
+> **重要**：
+> - 默认使用 \`id\` 字段作为行的唯一标识
+> - 可以通过 \`uniqueValue\` 属性自定义唯一标识字段名
+> - 切换分页后，已选中的行会自动保留
 
 ## 固定列
 
@@ -248,4 +307,4 @@ const handleSelect = (selection, row) => {
 
 > **注意**：需要从 \`@element-plus/icons-vue\` 导入图标组件
 
-`);return(b,c)=>(r(),t("div",s,[o("div",{innerHTML:n(e)},null,8,i)]))}}),v=p(m,[["__scopeId","data-v-fc5cba3a"]]);export{v as default};
+`);return(b,c)=>(r(),t("div",p,[o("div",{innerHTML:n(e)},null,8,u)]))}}),v=s(i,[["__scopeId","data-v-278a91b6"]]);export{v as default};

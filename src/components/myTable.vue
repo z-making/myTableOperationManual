@@ -8,6 +8,7 @@
       :height="height"
       :header-cell-style="props.headerStyle"
       :row-class-name="tableRowClassName"
+      :row-key="props.uniqueValue"
     >
       <el-table-column
         v-if="props.tableColumnIndex"
@@ -15,7 +16,7 @@
         width="55"
         :fixed="tableColumn[0]?.fixed"
       />
-      <el-table-column v-if="props.selection" type="selection" width="55" />
+      <el-table-column v-if="props.selection" type="selection" width="55" reserve-selection />
       <el-table-column
         v-for="item in tableColumn"
         :key="item.prop"
@@ -63,7 +64,9 @@
             </template>
           </el-image>
           <!-- 具名插槽 -->
-          <slot v-else-if="item.slot" :name="item.name" :="row">{{ row[item.prop] }}</slot>
+          <slot v-else-if="item.slot" :name="item.name || item.slot" :="row">{{
+            row[item.prop]
+          }}</slot>
           <!-- 选择框 -->
           <el-select
             v-else-if="item.select"
@@ -89,7 +92,7 @@
           <el-tag
             v-else-if="item.tag"
             :type="returnTextAndType(item.statusObj, row[item.prop]).type"
-            >{{ returnTextAndType(item.statusObj, row[item.prop], row).text }}</el-tag
+            >{{ returnTextAndType(item.statusObj, row[item.prop]).text }}</el-tag
           >
 
           <div v-else :style="{ color: item.color || '#000' }">
@@ -132,7 +135,7 @@ interface TableColumn {
   pan?: boolean // 是否展示判断文字
   or: string // 判断文字
   list?: Array<any> // 列表
-  slot?: boolean // 是否展示插槽
+  slot?: boolean | string // 是否展示插槽，如果是字符串则表示具名插槽同时也是插槽名称
   select?: boolean // 是否展示选择框
   placeholder?: string // 输入框的placeholder
   input?: boolean // 是否展示输入框
@@ -237,6 +240,11 @@ const props = defineProps({
     // 行条件改变颜色数组
     type: Array as PropType<ColorRow[]>,
     default: () => [],
+  },
+  uniqueValue: {
+    // 唯一值字段名, 一板用于select选择框的时候，保留之前选项所用
+    type: String,
+    default: 'id',
   },
 })
 

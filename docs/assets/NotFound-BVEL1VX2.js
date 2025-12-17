@@ -1,1 +1,0 @@
-import{_ as s,c as n,o as r,a as t}from"./index-BXPJdOPe.js";const l={},c={class:"flex-center t-40 tw-800 flex-column",style:{height:"100vh"}};function a(o,e){return r(),n("div",c,[e[1]||(e[1]=t("div",null,"404",-1)),t("div",{class:"cp",onClick:e[0]||(e[0]=d=>o.$router.push("/"))},"返回首页")])}const f=s(l,[["render",a]]);export{f as default};

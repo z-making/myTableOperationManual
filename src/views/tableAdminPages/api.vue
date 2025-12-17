@@ -37,9 +37,15 @@ const content = marked.parse(`
 
 | 属性名 | 说明 | 类型 | 默认值 | 必填 |
 |--------|------|------|--------|------|
-| selection | 是否显示多选框 | Boolean | false | 否 |
+| selection | 是否显示多选框（支持跨页保留选中） | Boolean | false | 否 |
 | tableColumnIndex | 是否显示索引列 | Boolean | false | 否 |
 | headerStyle | 表头样式 | Object | { background: '#f5f7fa' } | 否 |
+| uniqueValue | 行数据的唯一标识字段名（用于跨页保留选中） | String | 'id' | 否 |
+
+> **多选功能说明**：
+> - 组件内置支持跨页保留选中状态
+> - 默认使用 \`id\` 字段作为唯一标识，可通过 \`uniqueValue\` 自定义
+> - 使用 \`v-model:select\` 双向绑定选中的行数据
 
 ### 样式定制
 
@@ -68,9 +74,13 @@ const content = marked.parse(`
 | img | 是否为图片列 | Boolean | 否 |
 | tag | 是否为标签列 | Boolean | 否 |
 | pan | 是否为判断文本列 | Boolean | 否 |
-| slot | 是否为插槽列 | Boolean | 否 |
+| slot | 是否为插槽列，支持 Boolean 或直接传入插槽名称字符串 | Boolean / String | 否 |
 | input | 是否为输入框列 | Boolean | 否 |
 | select | 是否为下拉框列 | Boolean | 否 |
+
+> **插槽配置说明**：
+> - 当 \`slot: true\` 时，需要通过 \`name\` 属性指定插槽名
+> - 当 \`slot: 'slotName'\` 时，直接使用该字符串作为插槽名（推荐）
 
 ### 插槽配置
 
@@ -271,7 +281,7 @@ const selectedRows = ref([])
     <!-- row 是当前行的数据 -->
     <div>{{ row.name }}</div>
   </template>
-  
+
   <template #operation="row">
     <el-button @click="handleEdit(row)">编辑</el-button>
     <el-button @click="handleDelete(row)">删除</el-button>

@@ -4,11 +4,14 @@
       :data="tableData"
       @select="tableSelect"
       @select-all="tableSelect"
+      @row-click="handleRowClick"
       style="width: 100%"
       :height="height"
       :header-cell-style="props.headerStyle"
       :row-class-name="tableRowClassName"
       :row-key="props.uniqueValue"
+      :highlight-current-row="props.highlightCurrentRow"
+      :row-style="getRowStyle"
     >
       <el-table-column
         v-if="props.tableColumnIndex"
@@ -55,7 +58,7 @@
             v-else-if="item.img"
             :src="row[item.prop]"
             class="imgStyle"
-            :preview-src-list="item.list || [row[item.prop]]"
+            :preview-src-list="row.imgPreviewList || [row[item.prop]]"
             preview-teleported
             show-progress
           >
@@ -119,8 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import { list } from 'postcss'
-import { onMounted, PropType, ref } from 'vue'
+import { onMounted, ref, type PropType } from 'vue'
 import { QuestionFilled } from '@element-plus/icons-vue'
 
 // 定义表格列的类型接口
@@ -165,6 +167,7 @@ const emit = defineEmits([
   'selectChange', // 选择框选择改变
   'inputChange', // 输入框改变
   'inputBlur', // 输入框失去焦点
+  'rowClick', // 行点击
   'update:pageNum', // 更新pageNum
   'update:pageSize', // 更新pageSize
   'update:select', // 更新select
@@ -246,6 +249,11 @@ const props = defineProps({
     type: String,
     default: 'id',
   },
+  highlightCurrentRow: {
+    // 是否高亮当前行
+    type: Boolean,
+    default: false,
+  },
 })
 
 const pageNum = ref(props.pageNum)
@@ -260,13 +268,28 @@ const pageChange = () => {
 }
 
 // 表格选中 Select 触发
-const tableSelect = (val, row) => {
+const tableSelect = (val: any, row: any) => {
   emit('update:select', val)
   emit('tableSelect', val, row)
 }
 
+// 行点击事件
+const handleRowClick = (row: any, column: any, event: any) => {
+  emit('rowClick', row, column, event)
+}
+
+// 获取行样式（用于动态背景色）
+const getRowStyle = ({ row }: { row: any }) => {
+  if (row.rowColorField) {
+    return {
+      backgroundColor: row.rowColorField,
+    }
+  }
+  return {}
+}
+
 // 动态生成行类名
-const tableRowClassName = ({ row }) => {
+const tableRowClassName = ({ row }: { row: any }) => {
   // console.log(row, 'row');
   // 是否启用行根据条件变色
   if (props.rowConditionChangeColorArr.length > 0) {
@@ -284,7 +307,7 @@ const tableRowClassName = ({ row }) => {
  * @param {Object} b 行数据b
  * @returns {number} 比较结果（-1/0/1，表格会自动根据升序/降序反转结果）
  */
-const customSort = (a, b, name) => {
+const customSort = (a: any, b: any, name: string) => {
   const valA = a[name]
   const valB = b[name]
 

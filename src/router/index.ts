@@ -79,6 +79,14 @@ export const routerPages: RouteRecordRaw[] = [
           requiresAuth: true,
         },
       },
+      {
+        path: '/course/vue2',
+        component: () => import('@/views/tableAdminPages/vue2.vue'),
+        meta: {
+          title: 'Vue2版本',
+          requiresAuth: true,
+        },
+      },
     ],
   },
   {

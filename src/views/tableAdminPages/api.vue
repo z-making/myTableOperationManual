@@ -41,11 +41,25 @@ const content = marked.parse(`
 | tableColumnIndex | 是否显示索引列 | Boolean | false | 否 |
 | headerStyle | 表头样式 | Object | { background: '#f5f7fa' } | 否 |
 | uniqueValue | 行数据的唯一标识字段名（用于跨页保留选中） | String | 'id' | 否 |
+| highlightCurrentRow | 是否高亮当前行 | Boolean | false | 否 |
 
 > **多选功能说明**：
 > - 组件内置支持跨页保留选中状态
 > - 默认使用 \`id\` 字段作为唯一标识，可通过 \`uniqueValue\` 自定义
 > - 使用 \`v-model:select\` 双向绑定选中的行数据
+
+### 行动态背景色
+
+通过在行数据中添加 \`rowColorField\` 字段，可以动态设置行的背景色：
+
+\`\`\`javascript
+const tableData = [
+  { id: 1, name: '张三' },
+  { id: 2, name: '李四', rowColorField: '#f8d7da' }  // 该行显示浅红色背景
+]
+\`\`\`
+
+> **注意**：\`rowColorField\` 是预留字段名，组件会自动识别并应用背景色
 
 ### 样式定制
 
@@ -174,6 +188,7 @@ rowConditionChangeColorArr: [
 | tableSelect | 选择项发生变化时触发 | (selection, row) |
 | selectChange | 下拉框值改变时触发 | (value, row) |
 | inputChange | 输入框值改变时触发 | (value, row) |
+| rowClick | 行点击时触发 | (row, column, event) |
 | inputBlur | 输入框失去焦点时触发 | (value, row) |
 
 ### 事件详细说明

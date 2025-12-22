@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as o,a as l,u as n,o as s,_ as p}from"./index-BgImzSz3.js";const m={class:"markdown-body",style:{padding:"20px"}},r=["innerHTML"],c=t({__name:"index",setup(u){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as o,a as l,u as n,o as s,_ as p}from"./index-BRNeSY6H.js";const m={class:"markdown-body",style:{padding:"20px"}},r=["innerHTML"],c=t({__name:"index",setup(u){const e=a.parse(`
 # myTable 组件使用文档
 
 ## 介绍

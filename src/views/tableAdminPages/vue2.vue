@@ -106,9 +106,9 @@ tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
-  // 图片列（imgPreviewList 指定行数据中的预览列表字段名，一般都会声明了公共的处理数据的方法）
+  // 图片列（预览列表从行数据的 imgPreviewList 字段获取）
   { label: '头像', prop: 'avatar', img: true },
-  // 行数据示例：{ avatar: 'url1', previewImages: ['url1', 'url2', 'url3'] }
+  // 行数据示例：{ avatar: 'url1', imgPreviewList: ['url1', 'url2', 'url3'] }
 
   // 标签列
   { label: '状态', prop: 'status', tag: true, statusObj: {
@@ -141,7 +141,7 @@ tableColumn: [
   // 表头提示
   { label: '评分', prop: 'score', tooltipIcon: 'el-icon-question', tooltipContent: '0-100分' },
 
-  // 文本装饰
+  // 文本装饰（支持 leftIcon/rightIcon/color）
   { label: '金额', prop: 'amount', leftIcon: '¥', color: '#67C23A' },
 
   // 空值处理
@@ -175,15 +175,15 @@ tableColumn: [
 </myTable>
 \`\`\`
 
-## 行动态背景色
+## 行动态背景色与字体色
 
-通过在行数据中添加 \`rowColorField\` 字段设置背景色：
+通过在行数据中添加 \`rowColorField\` 和 \`fontColorField\` 字段设置背景色和字体色：
 
 \`\`\`javascript
 tableData: [
   { id: 1, name: '张三' },
-  { id: 2, name: '李四', rowColorField: '#f8d7da' },  // 浅红色
-  { id: 3, name: '王五', rowColorField: '#d4edda' }   // 浅绿色
+  { id: 2, name: '李四', rowColorField: '#f8d7da', fontColorField: '#721c24' },  // 浅红背景 + 深红字体
+  { id: 3, name: '王五', rowColorField: '#d4edda', fontColorField: '#155724' }   // 浅绿背景 + 深绿字体
 ]
 \`\`\`
 

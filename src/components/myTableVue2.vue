@@ -99,7 +99,7 @@
             {{ returnTextAndType(item.statusObj, scope.row[item.prop]).text }}
           </el-tag>
           <!-- 默认文本展示 -->
-          <div v-else :style="{ color: item.color || '#000' }">
+          <div v-else :style="{ color: item.color || '' }">
             {{ item.leftIcon || ''
             }}{{
               scope.row[item.prop] !== undefined &&
@@ -318,6 +318,7 @@ export default {
       if (row.rowColorField) {
         return {
           backgroundColor: row.rowColorField,
+          color: `${row.fontColorField} !important`,
         }
       }
       return {}

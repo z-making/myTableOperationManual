@@ -61,7 +61,7 @@
             v-else-if="item.img"
             :src="scope.row[item.prop]"
             class="imgStyle"
-            :preview-src-list="scope.row[item.imgPreviewList] || [scope.row[item.prop]]"
+            :preview-src-list="scope.row.imgPreviewList || [scope.row[item.prop]]"
             fit="cover"
           >
             <div slot="error" class="image-slot"></div>

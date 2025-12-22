@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as l,a as o,u as n,o as r,_ as i}from"./index-X8PCz8na.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=t({__name:"vue2",setup(c){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as l,a as o,u as r,o as n,_ as u}from"./index-BgImzSz3.js";const s={class:"markdown-body",style:{padding:"20px"}},i=["innerHTML"],p=t({__name:"vue2",setup(c){const e=a.parse(`
 # Vue 2 版本使用文档
 
 myTableVue2 是专为 Vue 2 + Element UI 项目设计的通用表格组件。
@@ -96,8 +96,8 @@ tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
-  // 图片列（imgPreviewList 指定行数据中的预览列表字段名）
-  { label: '头像', prop: 'avatar', img: true, imgPreviewList: 'previewImages' },
+  // 图片列（imgPreviewList 指定行数据中的预览列表字段名，一般都会声明了公共的处理数据的方法）
+  { label: '头像', prop: 'avatar', img: true },
   // 行数据示例：{ avatar: 'url1', previewImages: ['url1', 'url2', 'url3'] }
 
   // 标签列
@@ -108,6 +108,13 @@ tableColumn: [
 
   // 判断文本列
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
+
+  // 下拉框列
+  { label: '状态', prop: 'status', select: true, placeholder: '请选择状态',
+    list: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }] },
+
+  // 输入框列
+  { label: '备注', prop: 'remark', input: true, placeholder: '请输入备注' },
 
   // 插槽列（方式一：slot + name）
   { label: '操作', prop: 'action', slot: true, name: 'action' },
@@ -198,4 +205,4 @@ tableData: [
 | 行点击事件 | \`@row-click\` | \`@rowClick\` |
 | 图标写法 | \`el-icon-question\` 类名 | 组件形式引入 |
 
-`);return(m,b)=>(r(),l("div",s,[o("div",{innerHTML:n(e)},null,8,u)]))}}),C=i(p,[["__scopeId","data-v-f2fe2535"]]);export{C as default};
+`);return(m,b)=>(n(),l("div",s,[o("div",{innerHTML:r(e)},null,8,i)]))}}),C=u(p,[["__scopeId","data-v-e4072da1"]]);export{C as default};

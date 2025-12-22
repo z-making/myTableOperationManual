@@ -106,8 +106,8 @@ tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
-  // 图片列（imgPreviewList 指定行数据中的预览列表字段名）
-  { label: '头像', prop: 'avatar', img: true, imgPreviewList: 'previewImages' },
+  // 图片列（imgPreviewList 指定行数据中的预览列表字段名，一般都会声明了公共的处理数据的方法）
+  { label: '头像', prop: 'avatar', img: true },
   // 行数据示例：{ avatar: 'url1', previewImages: ['url1', 'url2', 'url3'] }
 
   // 标签列
@@ -118,6 +118,13 @@ tableColumn: [
 
   // 判断文本列
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
+
+  // 下拉框列
+  { label: '状态', prop: 'status', select: true, placeholder: '请选择状态',
+    list: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }] },
+
+  // 输入框列
+  { label: '备注', prop: 'remark', input: true, placeholder: '请输入备注' },
 
   // 插槽列（方式一：slot + name）
   { label: '操作', prop: 'action', slot: true, name: 'action' },

@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as s}from"./index-BRNeSY6H.js";const i={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=l({__name:"basic",setup(m){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as i}from"./index-DUvxHYBV.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=l({__name:"basic",setup(m){const e=a.parse(`
 # 基础用法
 
 本章节介绍 myTable 组件的各种基础功能和列类型配置。
@@ -307,28 +307,30 @@ const tableData = ref([
 
 > **注意**：需要从 \`@element-plus/icons-vue\` 导入图标组件
 
-## 行动态背景色
+## 行动态背景色与字体色
 
-通过在行数据中添加 \`rowColorField\` 字段，可以动态设置行的背景色。
+通过在行数据中添加 \`rowColorField\` 和 \`fontColorField\` 字段，可以动态设置行的背景色和字体色。
 
 ### 基础用法
 
 \`\`\`javascript
 const tableData = ref([
   { id: 1, name: '张三', status: '正常' },
-  { id: 2, name: '李四', status: '异常', rowColorField: '#f8d7da' },  // 浅红色背景
-  { id: 3, name: '王五', status: 'VIP', rowColorField: '#fff3cd' }     // 浅黄色背景
+  { id: 2, name: '李四', status: '异常', rowColorField: '#f8d7da', fontColorField: '#721c24' },  // 浅红背景 + 深红字体
+  { id: 3, name: '王五', status: 'VIP', rowColorField: '#d4edda', fontColorField: '#155724' }     // 浅绿背景 + 深绿字体
 ])
 \`\`\`
 
-### 常用背景色参考
+### 常用配色参考
 
-- \`#f8d7da\` - 浅红色（危险/异常）
-- \`#d4edda\` - 浅绿色（成功/正常）
-- \`#fff3cd\` - 浅黄色（警告/提醒）
-- \`#cce5ff\` - 浅蓝色（信息/重要）
-- \`#e2e3e5\` - 浅灰色（禁用/次要）
+| 场景 | 背景色 (rowColorField) | 字体色 (fontColorField) |
+|------|--------------------------|---------------------------|
+| 危险/异常 | #f8d7da | #721c24 |
+| 成功/正常 | #d4edda | #155724 |
+| 警告/提醒 | #fff3cd | #856404 |
+| 信息/重要 | #cce5ff | #004085 |
+| 禁用/次要 | #e2e3e5 | #383d41 |
 
-> **提示**：\`rowColorField\` 会直接作为 CSS 的 \`backgroundColor\` 值，支持任何合法的颜色格式（如 \`#fff\`、\`rgb()\`、\`rgba()\` 等）
+> **提示**：支持任何合法的 CSS 颜色格式（如 \`#fff\`、\`rgb()\`、\`rgba()\` 等）
 
-`);return(b,d)=>(r(),t("div",i,[o("div",{innerHTML:n(e)},null,8,u)]))}}),f=s(p,[["__scopeId","data-v-5e19944c"]]);export{f as default};
+`);return(d,b)=>(r(),t("div",s,[o("div",{innerHTML:n(e)},null,8,u)]))}}),g=i(p,[["__scopeId","data-v-a2fb362f"]]);export{g as default};

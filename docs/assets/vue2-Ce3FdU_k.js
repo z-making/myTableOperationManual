@@ -1,4 +1,4 @@
-import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as r,o as n,_ as u}from"./index-BRNeSY6H.js";const i={class:"markdown-body",style:{padding:"20px"}},s=["innerHTML"],p=a({__name:"vue2",setup(c){const e=t.parse(`
+import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as r,o as n,_ as u}from"./index-DUvxHYBV.js";const i={class:"markdown-body",style:{padding:"20px"}},s=["innerHTML"],p=a({__name:"vue2",setup(c){const e=t.parse(`
 # Vue 2 版本使用文档
 
 myTableVue2 是专为 Vue 2 + Element UI 项目设计的通用表格组件。

@@ -283,6 +283,7 @@ const getRowStyle = ({ row }: { row: any }) => {
   if (row.rowColorField) {
     return {
       backgroundColor: row.rowColorField,
+      color: `${row.fontColorField} !important`,
     }
   }
   return {}

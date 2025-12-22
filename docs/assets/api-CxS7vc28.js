@@ -1,4 +1,4 @@
-import{d as t}from"./github-markdown-CBpekFFP.js";import{d as o,c as a,a as n,u as l,o as r,_ as s}from"./index-BRNeSY6H.js";const i={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],g=o({__name:"api",setup(u){const e=t.parse(`
+import{d as o}from"./github-markdown-CBpekFFP.js";import{d as t,c as a,a as l,u as n,o as r,_ as s}from"./index-DUvxHYBV.js";const i={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],g=t({__name:"api",setup(u){const e=o.parse(`
 # API 文档
 
 完整的 myTable 组件 API 参考文档。
@@ -38,18 +38,18 @@ import{d as t}from"./github-markdown-CBpekFFP.js";import{d as o,c as a,a as n,u 
 > - 默认使用 \`id\` 字段作为唯一标识，可通过 \`uniqueValue\` 自定义
 > - 使用 \`v-model:select\` 双向绑定选中的行数据
 
-### 行动态背景色
+### 行动态背景色与字体色
 
-通过在行数据中添加 \`rowColorField\` 字段，可以动态设置行的背景色：
+通过在行数据中添加 \`rowColorField\` 和 \`fontColorField\` 字段，可以动态设置行的背景色和字体色：
 
 \`\`\`javascript
 const tableData = [
   { id: 1, name: '张三' },
-  { id: 2, name: '李四', rowColorField: '#f8d7da' }  // 该行显示浅红色背景
+  { id: 2, name: '李四', rowColorField: '#f8d7da', fontColorField: '#721c24' }  // 浅红背景 + 深红字体
 ]
 \`\`\`
 
-> **注意**：\`rowColorField\` 是预留字段名，组件会自动识别并应用背景色
+> **注意**：\`rowColorField\` 和 \`fontColorField\` 是预留字段名，组件会自动识别并应用样式
 
 ### 样式定制
 
@@ -368,4 +368,4 @@ interface ColorRow {
 - 行高亮样式定义在非 scoped 的 style 中
 - 自定义分页样式使用 \`paginationClass\`
 
-`);return(p,m)=>(r(),a("div",i,[n("div",{innerHTML:l(e)},null,8,c)]))}}),v=s(g,[["__scopeId","data-v-efb8d58e"]]);export{v as default};
+`);return(p,m)=>(r(),a("div",i,[l("div",{innerHTML:n(e)},null,8,c)]))}}),v=s(g,[["__scopeId","data-v-52931e54"]]);export{v as default};

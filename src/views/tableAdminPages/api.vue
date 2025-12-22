@@ -48,18 +48,18 @@ const content = marked.parse(`
 > - 默认使用 \`id\` 字段作为唯一标识，可通过 \`uniqueValue\` 自定义
 > - 使用 \`v-model:select\` 双向绑定选中的行数据
 
-### 行动态背景色
+### 行动态背景色与字体色
 
-通过在行数据中添加 \`rowColorField\` 字段，可以动态设置行的背景色：
+通过在行数据中添加 \`rowColorField\` 和 \`fontColorField\` 字段，可以动态设置行的背景色和字体色：
 
 \`\`\`javascript
 const tableData = [
   { id: 1, name: '张三' },
-  { id: 2, name: '李四', rowColorField: '#f8d7da' }  // 该行显示浅红色背景
+  { id: 2, name: '李四', rowColorField: '#f8d7da', fontColorField: '#721c24' }  // 浅红背景 + 深红字体
 ]
 \`\`\`
 
-> **注意**：\`rowColorField\` 是预留字段名，组件会自动识别并应用背景色
+> **注意**：\`rowColorField\` 和 \`fontColorField\` 是预留字段名，组件会自动识别并应用样式
 
 ### 样式定制
 

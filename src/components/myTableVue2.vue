@@ -61,7 +61,7 @@
             v-else-if="item.img"
             :src="scope.row[item.prop]"
             class="imgStyle"
-            :preview-src-list="item.imgPreviewList || [scope.row[item.prop]]"
+            :preview-src-list="scope.row[item.imgPreviewList] || [scope.row[item.prop]]"
             fit="cover"
           >
             <div slot="error" class="image-slot"></div>
@@ -142,7 +142,7 @@
  * @property {boolean} [pan] - 是否展示判断文字
  * @property {string} [or] - 判断文字（默认值）
  * @property {Array} [list] - 列表数据（用于select/image预览）
- * @property {boolean|string} [slot] - 是否展示插槽
+ * @property {boolean|string} [slot] - 是否展示插槽 ｜ slot名称
  * @property {boolean} [select] - 是否展示选择框
  * @property {string} [placeholder] - 输入框的placeholder
  * @property {boolean} [input] - 是否展示输入框

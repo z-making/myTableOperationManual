@@ -1,4 +1,4 @@
-import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as n,o as r,_ as s}from"./index-CpMPxPWm.js";const u={class:"markdown-body",style:{padding:"20px"}},i=["innerHTML"],p=a({__name:"vue2",setup(c){const e=t.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as l,a as o,u as n,o as r,_ as i}from"./index-X8PCz8na.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=t({__name:"vue2",setup(c){const e=a.parse(`
 # Vue 2 版本使用文档
 
 myTableVue2 是专为 Vue 2 + Element UI 项目设计的通用表格组件。
@@ -66,7 +66,7 @@ export default {
 | pageNum | 当前页码（支持 .sync） | Number | 1 |
 | pageSize | 每页条数（支持 .sync） | Number | 10 |
 | total | 总条数 | Number | 0 |
-| height | 表格高度 | String/Number | null |
+| height | 表格高度（未设置时默认最大高度700px） | String/Number | null |
 | selection | 是否显示多选框 | Boolean | false |
 | tableColumnIndex | 是否显示索引列 | Boolean | false |
 | pagination | 是否显示分页 | Boolean | true |
@@ -96,8 +96,9 @@ tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
-  // 图片列
-  { label: '头像', prop: 'avatar', img: true },
+  // 图片列（imgPreviewList 指定行数据中的预览列表字段名）
+  { label: '头像', prop: 'avatar', img: true, imgPreviewList: 'previewImages' },
+  // 行数据示例：{ avatar: 'url1', previewImages: ['url1', 'url2', 'url3'] }
 
   // 标签列
   { label: '状态', prop: 'status', tag: true, statusObj: {
@@ -108,8 +109,11 @@ tableColumn: [
   // 判断文本列
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
 
-  // 插槽列
+  // 插槽列（方式一：slot + name）
   { label: '操作', prop: 'action', slot: true, name: 'action' },
+
+  // 插槽列（方式二：直接传插槽名，推荐）
+  { label: '操作', prop: 'action', slot: 'action' },
 
   // 排序列
   { label: '金额', prop: 'amount', sortable: 'custom', isCustomSort: true },
@@ -130,11 +134,14 @@ tableColumn: [
 
 ## 多选功能
 
+支持跨页保留选中状态，通过 \`uniqueValue\` 指定唯一标识字段：
+
 \`\`\`vue
 <myTable
   :tableData="tableData"
   :tableColumn="tableColumn"
   :selection="true"
+  uniqueValue="id"
   :select.sync="selectedRows"
   @tableSelect="handleSelect"
 />
@@ -191,4 +198,4 @@ tableData: [
 | 行点击事件 | \`@row-click\` | \`@rowClick\` |
 | 图标写法 | \`el-icon-question\` 类名 | 组件形式引入 |
 
-`);return(m,b)=>(r(),l("div",u,[o("div",{innerHTML:n(e)},null,8,i)]))}}),C=s(p,[["__scopeId","data-v-5df5308f"]]);export{C as default};
+`);return(m,b)=>(r(),l("div",s,[o("div",{innerHTML:n(e)},null,8,u)]))}}),C=i(p,[["__scopeId","data-v-f2fe2535"]]);export{C as default};

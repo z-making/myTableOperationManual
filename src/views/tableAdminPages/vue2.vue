@@ -76,7 +76,7 @@ export default {
 | pageNum | 当前页码（支持 .sync） | Number | 1 |
 | pageSize | 每页条数（支持 .sync） | Number | 10 |
 | total | 总条数 | Number | 0 |
-| height | 表格高度 | String/Number | null |
+| height | 表格高度（未设置时默认最大高度700px） | String/Number | null |
 | selection | 是否显示多选框 | Boolean | false |
 | tableColumnIndex | 是否显示索引列 | Boolean | false |
 | pagination | 是否显示分页 | Boolean | true |
@@ -106,8 +106,9 @@ tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
-  // 图片列
-  { label: '头像', prop: 'avatar', img: true },
+  // 图片列（imgPreviewList 指定行数据中的预览列表字段名）
+  { label: '头像', prop: 'avatar', img: true, imgPreviewList: 'previewImages' },
+  // 行数据示例：{ avatar: 'url1', previewImages: ['url1', 'url2', 'url3'] }
 
   // 标签列
   { label: '状态', prop: 'status', tag: true, statusObj: {
@@ -118,8 +119,11 @@ tableColumn: [
   // 判断文本列
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
 
-  // 插槽列
+  // 插槽列（方式一：slot + name）
   { label: '操作', prop: 'action', slot: true, name: 'action' },
+
+  // 插槽列（方式二：直接传插槽名，推荐）
+  { label: '操作', prop: 'action', slot: 'action' },
 
   // 排序列
   { label: '金额', prop: 'amount', sortable: 'custom', isCustomSort: true },
@@ -140,11 +144,14 @@ tableColumn: [
 
 ## 多选功能
 
+支持跨页保留选中状态，通过 \`uniqueValue\` 指定唯一标识字段：
+
 \`\`\`vue
 <myTable
   :tableData="tableData"
   :tableColumn="tableColumn"
   :selection="true"
+  uniqueValue="id"
   :select.sync="selectedRows"
   @tableSelect="handleSelect"
 />

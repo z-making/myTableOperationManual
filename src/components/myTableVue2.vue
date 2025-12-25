@@ -67,16 +67,16 @@
             <div slot="error" class="image-slot"></div>
           </el-image>
           <!-- 具名插槽 -->
-          <slot v-else-if="item.slot" :name="item.name || item.slot" v-bind="scope.row">{{
+          <slot v-else-if="item.slot" :name="item.name || item.slot" v-bind="scope">{{
             scope.row[item.prop]
           }}</slot>
           <!-- 选择框 -->
           <el-select
             v-else-if="item.select"
             v-model="scope.row[item.prop]"
-            @change="handleSelectChange($event, scope.row)"
+            @change="item.selectChange ? item.selectChange(scope.row[item.prop], scope.row) : null"
             :placeholder="item.placeholder || '请选择'"
-            clearable
+            :clearable="item.clearable"
             style="width: 100%"
           >
             <el-option v-for="i in item.list" :key="i.value" :label="i.label" :value="i.value" />
@@ -85,12 +85,35 @@
           <el-input
             v-else-if="item.input"
             v-model="scope.row[item.prop]"
-            @input="handleInputChange($event, scope.row)"
-            @blur="handleInputBlur($event, scope.row)"
-            style="width: 240px"
+            @input="
+              item.inputChange
+                ? item.inputChange(scope.row[item.prop], scope.row)
+                : handleInputChange($event, scope.row, item)
+            "
+            @blur="item.inputBlur ? item.inputBlur(scope.row[item.prop], scope.row) : null"
+            style="width: 100%"
+            :type="item.type || 'text'"
             :placeholder="item.placeholder || `请输入${item.label}`"
-            clearable
+            :clearable="item.clearable"
           />
+          <!-- 复选框 -->
+          <el-checkbox
+            v-else-if="item.checkbox"
+            v-model="scope.row[item.prop]"
+            :true-label="item.trueLabel"
+            :false-label="item.falseLabel"
+            :clearable="item.clearable"
+            @change="item.checkboxChange ? item.checkboxChange($event, scope.row) : null"
+          />
+          <el-radio-group
+            v-else-if="item.radio"
+            v-model="scope.row[item.prop]"
+            @input="item.radioInput ? item.radioInput(scope.row[item.prop], scope.row) : null"
+          >
+            <el-radio v-for="i in item.list" :key="i.value" :label="i.value">{{
+              i.label
+            }}</el-radio>
+          </el-radio-group>
           <!-- tag. 目前仅支持element tag的参数 primary success info warning danger-->
           <el-tag
             v-else-if="item.tag"
@@ -100,14 +123,19 @@
           </el-tag>
           <!-- 默认文本展示 -->
           <div v-else :style="{ color: item.color || '' }">
-            {{ item.leftIcon || ''
-            }}{{
+            <span v-if="validateField(scope.row[item.prop]) && !item.or">{{
+              item.leftIcon || ''
+            }}</span>
+            {{
               scope.row[item.prop] !== undefined &&
               scope.row[item.prop] !== null &&
               scope.row[item.prop] !== ''
                 ? scope.row[item.prop]
                 : item.or
-            }}{{ item.rightIcon || '' }}
+            }}
+            <span v-if="validateField(scope.row[item.prop]) && !item.or">{{
+              item.rightIcon || ''
+            }}</span>
           </div>
         </template>
       </el-table-column>
@@ -133,35 +161,110 @@
 /**
  * myTable 通用表格组件 (Vue 2 + Element UI)
  *
- * 表格列配置 tableColumn 说明：
- * @property {string} prop - 列的value字段
- * @property {string} label - 列名
- * @property {string|number} [width] - 列宽
- * @property {string} [leftIcon] - 展示左图标
- * @property {string} [rightIcon] - 展示右图标
- * @property {boolean} [pan] - 是否展示判断文字
- * @property {string} [or] - 判断文字（默认值）
- * @property {Array} [list] - 列表数据（用于select/image预览）
- * @property {boolean|string} [slot] - 是否展示插槽 ｜ slot名称
- * @property {boolean} [select] - 是否展示选择框
- * @property {string} [placeholder] - 输入框的placeholder
- * @property {boolean} [input] - 是否展示输入框
- * @property {boolean} [tag] - 是否展示标签
- * @property {Object} [statusObj] - 状态对象
- * @property {boolean} [img] - 是否展示图片
- * @property {string} [name] - slot名称
- * @property {string} [align] - 对齐方式
- * @property {string} [color] - 颜色
- * @property {boolean|string} [sortable] - 是否排序
- * @property {boolean} [isCustomSort] - 是否自定义排序
- * @property {boolean|string} [fixed] - 是否固定
- * @property {string} [tooltipIcon] - 展示的图标类名 (如 'el-icon-question')
- * @property {string} [tooltipContent] - 展示的tooltip内容
+ * ========== Props 属性配置 ==========
+ * @property {Array} tableData - 表格数据
+ * @property {Array} tableColumn - 表格列配置，详见下方说明
+ * @property {Number} pageNum - 当前页码，支持 .sync 修饰符
+ * @property {Number} pageSize - 每页条数，支持 .sync 修饰符
+ * @property {Number} total - 数据总条数
+ * @property {String|Number} height - 表格高度，默认 null，最大高度 700px
+ * @property {Boolean} selection - 是否展示多选框，默认 false
+ * @property {Boolean} tableColumnIndex - 是否展示序号列，默认 false
+ * @property {String} imgHeight - 图片高度，默认 '0.2rem'
+ * @property {String} imgWidth - 图片宽度，默认 '0.2rem'
+ * @property {Object} headerStyle - 表头样式，默认 { background: '#f5f7fa' }
+ * @property {Boolean} pagination - 是否展示分页，默认 true
+ * @property {String} paginationClass - 分页容器自定义类名
+ * @property {Array} rowConditionChangeColorArr - 行条件变色配置数组，详见下方说明
+ * @property {String} uniqueValue - 行数据唯一值字段名，默认 'id'
+ * @property {Boolean} highlightCurrentRow - 是否高亮当前行，默认 false
  *
- * 行条件变色配置 rowConditionChangeColorArr 说明：
- * @property {string} condition - 条件名称（行数据的字段名称）
- * @property {string|number} value - 条件值
- * @property {string} className - 条件满足时添加的class
+ * ========== Events 事件 ==========
+ * @event changePage - 分页变化时触发（页码或每页条数变化）
+ * @event tableSelect - 多选框选中状态变化时触发，参数: selection
+ * @event row-click - 行点击时触发，参数: row, column, event
+ * @event update:pageNum - 页码更新事件（配合 .sync 使用）
+ * @event update:pageSize - 每页条数更新事件（配合 .sync 使用）
+ *
+ * ========== 表格列配置 tableColumn 说明 ==========
+ * @property {String} prop - 列的value字段（必填）
+ * @property {String} label - 列名（必填）
+ * @property {String|Number} [width] - 列宽
+ * @property {String} [align] - 对齐方式，默认 'center'
+ * @property {Boolean|String} [fixed] - 是否固定列，可选 true/'left'/'right'
+ * @property {Boolean|String} [sortable] - 是否可排序，可选 true/'custom'
+ * @property {Boolean} [isCustomSort] - 是否使用自定义排序方法
+ * @property {String} [color] - 文字颜色
+ *
+ * --- 文本展示类 ---
+ * @property {String} [leftIcon] - 文本左侧图标/符号，如 '¥'
+ * @property {String} [rightIcon] - 文本右侧图标/符号
+ * @property {String} [or] - 当值为空时显示的默认值，如 '--'
+ *
+ * --- 状态展示类 ---
+ * @property {Boolean} [pan] - 是否根据状态展示不同文字（不用tag）
+ * @property {Boolean} [tag] - 是否展示为Element Tag标签
+ * @property {Object} [statusObj] - 状态映射对象，如 { 0: { text: '编辑中', type: '' }, 1: { text: '待审核', type: 'warning' } }
+ *
+ * --- 图片展示 ---
+ * @property {Boolean} [img] - 是否展示图片，支持预览
+ *
+ * --- 插槽 ---
+ * @property {Boolean|String} [slot] - 是否使用插槽，为String时为插槽名
+ * @property {String} [name] - 插槽名称（与slot一起使用）
+ *
+ * --- 表单元素 ---
+ * @property {Boolean} [select] - 是否展示选择框
+ * @property {Boolean} [input] - 是否展示输入框（仅允许输入正数）
+ * @property {Boolean} [checkbox] - 是否展示复选框
+ * @property {Boolean} [radio] - 是否展示单选框
+ * @property {Array} [list] - 选择框/单选框的选项列表，格式: [{ label: '显示文字', value: '值' }]
+ * @property {String} [placeholder] - 输入框/选择框的placeholder
+ * @property {Boolean} [clearable] - 是否可清空
+ * @property {String} [type] - 输入框类型，默认 'text'
+ * @property {*} [trueLabel] - 复选框选中时的值
+ * @property {*} [falseLabel] - 复选框未选中时的值
+ *
+ * --- 表单事件回调 ---
+ * @property {Function} [selectChange] - 选择框变化回调，参数: (value, row)
+ * @property {Function} [inputChange] - 输入框变化回调，参数: (value, row)
+ * @property {Function} [inputBlur] - 输入框失焦回调，参数: (value, row)
+ * @property {Function} [checkboxChange] - 复选框变化回调，参数: (checked, row)
+ * @property {Function} [radioInput] - 单选框变化回调，参数: (value, row)
+ *
+ * --- 表头Tooltip ---
+ * @property {String} [tooltipIcon] - 表头提示图标类名，如 'el-icon-question'
+ * @property {String} [tooltipContent] - 表头提示tooltiop内容
+ *
+ * ========== 行条件变色配置 rowConditionChangeColorArr 说明 ==========
+ * @description 根据行数据条件动态添加行样式类名
+ * @property {String} condition - 条件字段名（行数据的字段）
+ * @property {String|Number} value - 条件值
+ * @property {String} className - 条件满足时添加的class名称
+ * @example
+ * // 示例：当 status 为 1 时，添加 warning-row 样式
+ * rowConditionChangeColorArr: [
+ *   { condition: 'status', value: 1, className: 'warning-row' }
+ * ]
+ *
+ * ========== 使用示例 ==========
+ * <my-table
+ *   :tableData="dataList"
+ *   :tableColumn="tableColumn"
+ *   :total="total"
+ *   :pageNum.sync="queryParams.pageNum"
+ *   :pageSize.sync="queryParams.pageSize"
+ *   :selection="true"
+ *   :loading="loading"
+ *   highlightCurrentRow
+ *   @changePage="getList"
+ *   @row-click="handleRowClick"
+ *   @tableSelect="handleSelectionChange"
+ * >
+ *   <template #action="{row}">
+ *     <el-button @click="handleEdit(row)">编辑</el-button>
+ *   </template>
+ * </my-table>
  */
 export default {
   name: 'MyTable',
@@ -293,15 +396,29 @@ export default {
     },
     // 选择框选择改变
     handleSelectChange(val, row) {
-      this.$emit('selectChange', val, row)
+      // this.$emit('selectChange', val, row)
     },
     // 输入框内容改变
-    handleInputChange(val, row) {
-      this.$emit('inputChange', val, row)
+    handleInputChange(val, row, item) {
+      // 输入框的数据只能为正数
+      if (item.zheng) {
+        let value = val.replace(/[^\d.]/g, '') // 只保留数字和小数点
+        value = value.replace(/^\./, '') // 不能以小数点开头
+        value = value.replace(/(\..*?)\..*/g, '$1') // 只保留第一个小数点
+        if (value && parseFloat(value) < 0) {
+          value = ''
+        }
+        row[item.prop] = value
+      }
     },
     // 输入框失去焦点
     handleInputBlur(event, row) {
-      this.$emit('inputBlur', event, row)
+      // this.$emit('inputBlur', event, row)
+    },
+    // 校验字段
+    validateField(prop) {
+      if (prop === undefined || prop === null || prop === '') return false
+      return true
     },
     // 动态生成行类名
     tableRowClassName({ row }) {

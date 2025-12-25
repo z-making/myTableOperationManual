@@ -94,10 +94,10 @@ export default {
 |--------|------|----------|
 | changePage | 分页改变时触发 | - |
 | tableSelect | 选择项变化时触发 | (selection, row) |
+| update:select | 选中数据更新（配合 .sync 使用） | selection |
 | row-click | 行点击时触发 | (row, column, event) |
-| selectChange | 下拉框值改变时触发 | (value, row) |
-| inputChange | 输入框值改变时触发 | (value, row) |
-| inputBlur | 输入框失焦时触发 | (event, row) |
+
+> **注意**：表单元素（下拉框、输入框、复选框、单选框）的事件通过列配置中的回调函数实现（如 \`selectChange\`、\`inputChange\` 等）
 
 ## 列配置 tableColumn
 
@@ -119,12 +119,27 @@ tableColumn: [
   // 判断文本列
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
 
-  // 下拉框列
-  { label: '状态', prop: 'status', select: true, placeholder: '请选择状态',
-    list: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }] },
+  // 下拉框列（支持 clearable、回调函数）
+  { label: '状态', prop: 'status', select: true, placeholder: '请选择状态', clearable: true,
+    list: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }],
+    selectChange: (val, row) => { console.log('选中值:', val, '行数据:', row) } },
 
-  // 输入框列
-  { label: '备注', prop: 'remark', input: true, placeholder: '请输入备注' },
+  // 输入框列（支持 type、clearable、zheng、回调函数）
+  { label: '备注', prop: 'remark', input: true, placeholder: '请输入备注', type: 'text', clearable: true,
+    inputChange: (val, row) => { console.log('输入值:', val) },
+    inputBlur: (val, row) => { console.log('失焦值:', val) } },
+
+  // 数字输入框（zheng: true 限制只能输入正数）
+  { label: '数量', prop: 'count', input: true, zheng: true },
+
+  // 复选框列
+  { label: '是否启用', prop: 'enabled', checkbox: true, trueLabel: 1, falseLabel: 0,
+    checkboxChange: (checked, row) => { console.log('勾选状态:', checked) } },
+
+  // 单选框列
+  { label: '性别', prop: 'gender', radio: true,
+    list: [{ label: '男', value: 1 }, { label: '女', value: 2 }],
+    radioInput: (val, row) => { console.log('选中:', val) } },
 
   // 插槽列（方式一：slot + name）
   { label: '操作', prop: 'action', slot: true, name: 'action' },
@@ -168,12 +183,19 @@ tableColumn: [
 
 \`\`\`vue
 <myTable :tableData="tableData" :tableColumn="tableColumn">
-  <template slot="action" slot-scope="row">
+  <template #quantity="scope.">
+    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+    <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
+  </template>
+  或者
+  <template #quantity="{row}">
     <el-button size="mini" @click="handleEdit(row)">编辑</el-button>
     <el-button size="mini" type="danger" @click="handleDelete(row)">删除</el-button>
   </template>
 </myTable>
 \`\`\`
+
+> **注意**：\`quantity\` 是插槽名称接收的是 \`scope\` 对象，通过 \`scope.row\` 访问行数据
 
 ## 行动态背景色与字体色
 

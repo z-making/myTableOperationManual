@@ -20,7 +20,13 @@
         width="55"
         :fixed="getFirstColumnFixed"
       />
-      <el-table-column v-if="selection" type="selection" width="55" reserve-selection />
+      <el-table-column
+        v-if="selection"
+        type="selection"
+        width="55"
+        reserve-selection
+        :fixed="getFirstColumnFixed"
+      />
       <el-table-column
         v-for="item in tableColumn"
         :key="item.prop"
@@ -30,6 +36,7 @@
         :align="item.align || 'center'"
         :fixed="item.fixed || false"
         :sortable="item.sortable"
+        :show-overflow-tooltip="item.tooltip"
         :sort-method="item.isCustomSort ? (a, b) => customSort(a, b, item.prop) : undefined"
       >
         <!-- 自定义表头（带tooltip图标） -->
@@ -67,7 +74,7 @@
             <div slot="error" class="image-slot"></div>
           </el-image>
           <!-- 具名插槽 -->
-          <slot v-else-if="item.slot" :name="item.name || item.slot" v-bind="scope">{{
+          <slot v-else-if="item.slot" :name="item.slot" v-bind="scope">{{
             scope.row[item.prop]
           }}</slot>
           <!-- 选择框 -->
@@ -148,7 +155,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="currentPage"
-        :page-sizes="[10, 20, 30, 50, 100]"
+        :page-sizes="[5, 10, 20, 30, 50, 100]"
         :page-size.sync="currentPageSize"
         layout="sizes, prev, pager, next, jumper"
         :total="total"
@@ -210,7 +217,7 @@
  * @property {Boolean} [img] - 是否展示图片，支持预览
  *
  * --- 插槽 ---
- * @property {Boolean|String} [slot] - 是否使用插槽，为String时为插槽名
+ * @property {String} [slot] - 是否使用插槽，为String时为插槽名
  * @property {String} [name] - 插槽名称（与slot一起使用）
  *
  * --- 表单元素 ---
@@ -542,7 +549,7 @@ export default {
   width: 100%;
   padding: 10px 20px;
   box-sizing: border-box;
-  box-shadow: 0 -0.20833vw 0.41667vw 0 rgba(217, 217, 217, 0.25);
+  // box-shadow: 0 -0.20833vw 0.41667vw 0 rgba(217, 217, 217, 0.25);
   .total-data {
     font-size: 14px;
     color: #606266;

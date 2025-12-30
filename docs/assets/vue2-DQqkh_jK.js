@@ -1,4 +1,4 @@
-import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as n,o as r,_ as u}from"./index-Dx5XMsxA.js";const i={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],s=a({__name:"vue2",setup(p){const e=t.parse(`
+import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as r,o as n,_ as i}from"./index-Dve52W1L.js";const u={class:"markdown-body",style:{padding:"20px"}},s=["innerHTML"],p=a({__name:"vue2",setup(c){const e=t.parse(`
 # Vue 2 版本使用文档
 
 myTableVue2 是专为 Vue 2 + Element UI 项目设计的通用表格组件。
@@ -67,54 +67,75 @@ export default {
 | pageSize | 每页条数（支持 .sync） | Number | 10 |
 | total | 总条数 | Number | 0 |
 | height | 表格高度（未设置时默认最大高度700px） | String/Number | null |
-| selection | 是否显示多选框 | Boolean | false |
+| selection | 是否显示多选框（支持跨页保留选中） | Boolean | false |
 | tableColumnIndex | 是否显示索引列 | Boolean | false |
 | pagination | 是否显示分页 | Boolean | true |
-| uniqueValue | 唯一标识字段名 | String | 'id' |
+| uniqueValue | 唯一标识字段名（用于跨页选中） | String | 'id' |
 | highlightCurrentRow | 是否高亮当前行 | Boolean | false |
 | headerStyle | 表头样式 | Object | { background: '#f5f7fa' } |
 | imgWidth | 图片宽度 | String | '0.2rem' |
 | imgHeight | 图片高度 | String | '0.2rem' |
 | rowConditionChangeColorArr | 行条件高亮配置 | Array | [] |
-| paginationClass | 分页容器类名 | String | '' |
+| paginationClass | 分页容器自定义类名 | String | '' |
 
 ## 主要事件 Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
-| changePage | 分页改变时触发 | - |
+| changePage | 分页改变时触发（页码或每页条数变化） | - |
 | tableSelect | 选择项变化时触发 | (selection, row) |
 | update:select | 选中数据更新（配合 .sync 使用） | selection |
+| update:pageNum | 页码更新（配合 .sync 使用） | pageNum |
+| update:pageSize | 每页条数更新（配合 .sync 使用） | pageSize |
 | row-click | 行点击时触发 | (row, column, event) |
 
 > **注意**：表单元素（下拉框、输入框、复选框、单选框）的事件通过列配置中的回调函数实现（如 \`selectChange\`、\`inputChange\` 等）
 
 ## 列配置 tableColumn
 
+### 基础属性
+
+| 属性 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| prop | 列的字段名（必填） | String | - |
+| label | 列名（必填） | String | - |
+| width | 列宽 | String/Number | - |
+| align | 对齐方式 | String | 'center' |
+| fixed | 固定列位置 | Boolean/String | false |
+| sortable | 是否可排序 | Boolean/String | - |
+| isCustomSort | 是否使用内置自定义排序 | Boolean | - |
+| tooltip | 内容过长时显示 tooltip | Boolean | - |
+| color | 文字颜色 | String | - |
+
+### 配置示例
+
 \`\`\`javascript
 tableColumn: [
   // 普通文本列
   { label: '姓名', prop: 'name', width: 120, align: 'left' },
 
+  // 文本溢出显示 tooltip
+  { label: '描述', prop: 'description', tooltip: true },
+
   // 图片列（预览列表从行数据的 imgPreviewList 字段获取）
   { label: '头像', prop: 'avatar', img: true },
   // 行数据示例：{ avatar: 'url1', imgPreviewList: ['url1', 'url2', 'url3'] }
 
-  // 标签列
+  // 标签列（支持 Element Tag 的 type：primary/success/info/warning/danger）
   { label: '状态', prop: 'status', tag: true, statusObj: {
     1: { text: '正常', type: 'success' },
     0: { text: '禁用', type: 'danger' }
   }},
 
-  // 判断文本列
+  // 判断文本列（不使用 tag，直接显示对应文字）
   { label: '性别', prop: 'gender', pan: true, statusObj: { 1: '男', 2: '女' }},
 
-  // 下拉框列（支持 clearable、回调函数）
+  // 下拉框列
   { label: '状态', prop: 'status', select: true, placeholder: '请选择状态', clearable: true,
     list: [{ label: '启用', value: 1 }, { label: '禁用', value: 0 }],
     selectChange: (val, row) => { console.log('选中值:', val, '行数据:', row) } },
 
-  // 输入框列（支持 type、clearable、zheng、回调函数）
+  // 输入框列
   { label: '备注', prop: 'remark', input: true, placeholder: '请输入备注', type: 'text', clearable: true,
     inputChange: (val, row) => { console.log('输入值:', val) },
     inputBlur: (val, row) => { console.log('失焦值:', val) } },
@@ -131,32 +152,29 @@ tableColumn: [
     list: [{ label: '男', value: 1 }, { label: '女', value: 2 }],
     radioInput: (val, row) => { console.log('选中:', val) } },
 
-  // 插槽列（方式一：slot + name）
-  { label: '操作', prop: 'action', slot: true, name: 'action' },
-
-  // 插槽列（方式二：直接传插槽名，推荐）
+  // 插槽列（推荐：直接传插槽名）
   { label: '操作', prop: 'action', slot: 'action' },
 
-  // 排序列
+  // 排序列（使用内置自定义排序，支持数字、中文混合排序）
   { label: '金额', prop: 'amount', sortable: 'custom', isCustomSort: true },
 
   // 固定列
-  { label: '操作', prop: 'action', fixed: 'right', slot: true, name: 'action' },
+  { label: '操作', prop: 'action', fixed: 'right', slot: 'action' },
 
-  // 表头提示
+  // 表头提示（悬浮显示 tooltipContent）
   { label: '评分', prop: 'score', tooltipIcon: 'el-icon-question', tooltipContent: '0-100分' },
 
   // 文本装饰（支持 leftIcon/rightIcon/color）
-  { label: '金额', prop: 'amount', leftIcon: '¥', color: '#67C23A' },
+  { label: '金额', prop: 'amount', leftIcon: '¥', rightIcon: '元', color: '#67C23A' },
 
-  // 空值处理
+  // 空值处理（值为空时显示 or 的内容）
   { label: '备注', prop: 'remark', or: '-' }
 ]
 \`\`\`
 
 ## 多选功能
 
-支持跨页保留选中状态，通过 \`uniqueValue\` 指定唯一标识字段：
+支持跨页保留选中状态（通过 \`reserve-selection\` 实现），需配合 \`uniqueValue\` 指定唯一标识字段：
 
 \`\`\`vue
 <myTable
@@ -164,28 +182,30 @@ tableColumn: [
   :tableColumn="tableColumn"
   :selection="true"
   uniqueValue="id"
-  :select.sync="selectedRows"
   @tableSelect="handleSelect"
 />
 \`\`\`
+
+> **说明**：索引列和多选列会自动跟随第一列的 \`fixed\` 属性
 
 ## 插槽用法
 
 \`\`\`vue
 <myTable :tableData="tableData" :tableColumn="tableColumn">
-  <template #quantity="scope.">
-    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-    <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
-  </template>
-  或者
-  <template #quantity="{row}">
+  <!-- 解构写法（推荐） -->
+  <template #action="{ row }">
     <el-button size="mini" @click="handleEdit(row)">编辑</el-button>
     <el-button size="mini" type="danger" @click="handleDelete(row)">删除</el-button>
+  </template>
+
+  <!-- 完整 scope 写法 -->
+  <template #action="scope">
+    <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
   </template>
 </myTable>
 \`\`\`
 
-> **注意**：\`quantity\` 是插槽名称接收的是 \`scope\` 对象，通过 \`scope.row\` 访问行数据
+> **注意**：插槽名称需要与列配置中的 \`slot\` 值对应
 
 ## 行动态背景色与字体色
 
@@ -201,6 +221,8 @@ tableData: [
 
 ## 行条件高亮
 
+根据行数据条件动态添加行样式类名：
+
 \`\`\`vue
 <myTable
   :tableData="tableData"
@@ -212,10 +234,22 @@ tableData: [
 \`\`\`
 
 \`\`\`css
-/* 在非 scoped 样式中定义 */
-.el-table .rowRed {
+/* 组件已内置 rowRed 样式，也可自定义（需使用 ::v-deep 或非 scoped 样式） */
+::v-deep .el-table .rowRed {
   background-color: #f8d7da;
 }
+\`\`\`
+
+## 内置自定义排序
+
+当列配置 \`isCustomSort: true\` 时，使用内置排序逻辑：
+- 空值（null/undefined）排最后
+- 纯数字按数值大小排序
+- 数字优先于非数字
+- 非数字按中文拼音排序（localeCompare）
+
+\`\`\`javascript
+{ label: '排序列', prop: 'sortField', sortable: 'custom', isCustomSort: true }
 \`\`\`
 
 ## 与 Vue 3 版本的主要差异
@@ -223,8 +257,8 @@ tableData: [
 | 功能 | Vue 2 版本 | Vue 3 版本 |
 |------|-----------|-----------|
 | 双向绑定 | \`:pageNum.sync\` | \`v-model:pageNum\` |
-| 插槽语法 | \`slot-scope="row"\` | \`#slotName="row"\` |
+| 插槽语法 | \`slot-scope="scope"\` | \`#slotName="scope"\` |
 | 行点击事件 | \`@row-click\` | \`@rowClick\` |
-| 图标写法 | \`el-icon-question\` 类名 | 组件形式引入 |
+| 图标写法 | \`el-icon-question\` 类名 | \`<el-icon><QuestionFilled /></el-icon>\` 组件形式 |
 
-`);return(b,m)=>(r(),l("div",i,[o("div",{innerHTML:n(e)},null,8,c)]))}}),h=u(s,[["__scopeId","data-v-79b5ef02"]]);export{h as default};
+`);return(b,m)=>(n(),l("div",u,[o("div",{innerHTML:r(e)},null,8,s)]))}}),C=i(p,[["__scopeId","data-v-582b6630"]]);export{C as default};

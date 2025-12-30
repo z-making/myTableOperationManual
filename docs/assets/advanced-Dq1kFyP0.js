@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as l,a as o,u as n,o as r,_ as u}from"./index-Dx5XMsxA.js";const s={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],d=t({__name:"advanced",setup(b){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as t,c as l,a as o,u as n,o as r,_ as u}from"./index-Dve52W1L.js";const s={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],d=t({__name:"advanced",setup(b){const e=a.parse(`
 # 进阶功能
 
 探索 myTable 组件的高级特性，实现更复杂的业务需求。

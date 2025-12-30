@@ -1,4 +1,4 @@
-import{d as o}from"./github-markdown-CBpekFFP.js";import{d as t,c as a,a as l,u as n,o as r,_ as s}from"./index-Dx5XMsxA.js";const i={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],g=t({__name:"api",setup(u){const e=o.parse(`
+import{d as o}from"./github-markdown-CBpekFFP.js";import{d as t,c as a,a as l,u as n,o as r,_ as s}from"./index-Dve52W1L.js";const i={class:"markdown-body",style:{padding:"20px"}},c=["innerHTML"],g=t({__name:"api",setup(u){const e=o.parse(`
 # API 文档
 
 完整的 myTable 组件 API 参考文档。

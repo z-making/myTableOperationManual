@@ -1,6 +1,7 @@
 <template>
   <div :style="{ '--imgHeight': imgHeight, '--imgWidth': imgWidth }">
     <el-table
+      v-loading="loading"
       :data="tableData"
       @select="handleTableSelect"
       @select-all="handleTableSelect"
@@ -84,6 +85,7 @@
             @change="item.selectChange ? item.selectChange(scope.row[item.prop], scope.row) : null"
             :placeholder="item.placeholder || '请选择'"
             :clearable="item.clearable"
+            :disabled="getFormDisabled(item, scope.row)"
             style="width: 100%"
           >
             <el-option v-for="i in item.list" :key="i.value" :label="i.label" :value="i.value" />
@@ -92,6 +94,7 @@
           <el-input
             v-else-if="item.input"
             v-model="scope.row[item.prop]"
+            :disabled="getFormDisabled(item, scope.row)"
             @input="
               item.inputChange
                 ? item.inputChange(scope.row[item.prop], scope.row)
@@ -110,11 +113,13 @@
             :true-label="item.trueLabel"
             :false-label="item.falseLabel"
             :clearable="item.clearable"
+            :disabled="getFormDisabled(item, scope.row)"
             @change="item.checkboxChange ? item.checkboxChange($event, scope.row) : null"
           />
           <el-radio-group
             v-else-if="item.radio"
             v-model="scope.row[item.prop]"
+            :disabled="getFormDisabled(item, scope.row)"
             @input="item.radioInput ? item.radioInput(scope.row[item.prop], scope.row) : null"
           >
             <el-radio v-for="i in item.list" :key="i.value" :label="i.value">{{
@@ -356,6 +361,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading: {
+      // 是否显示加载中
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -489,6 +499,27 @@ export default {
         sensitivity: 'base',
         usage: 'sort',
       })
+    },
+    /**
+     * 获取表单元素禁用状态
+     * @param {Object} item 列配置
+     * @param {Object} row 行数据
+     * @returns {Boolean} 是否禁用
+     */
+    getFormDisabled(item, row) {
+      // 支持函数回调
+      if (typeof item.disabled === 'function') {
+        return item.disabled(row)
+      }
+      // 支持字段名（兼容旧写法 isEditText）
+      if (item.disabledField) {
+        return row[item.disabledField]
+      }
+      if (item.isEditText) {
+        return row[item.isEditText]
+      }
+      // 支持固定布尔值
+      return item.disabled || false
     },
     /**
      * 返回对应的文本和类型

@@ -87,6 +87,7 @@ export default {
 | imgHeight | 图片高度 | String | '0.2rem' |
 | rowConditionChangeColorArr | 行条件高亮配置 | Array | [] |
 | paginationClass | 分页容器自定义类名 | String | '' |
+| loading | 是否显示加载中 | Boolean | false |
 
 ## 主要事件 Events
 
@@ -161,6 +162,14 @@ tableColumn: [
   { label: '性别', prop: 'gender', radio: true,
     list: [{ label: '男', value: 1 }, { label: '女', value: 2 }],
     radioInput: (val, row) => { console.log('选中:', val) } },
+
+  // 表单元素禁用（适用于 select/input/checkbox/radio）
+  // 方式一：函数回调（推荐）
+  { label: '数量', prop: 'count', input: true, disabled: (row) => row.status === 0 },
+  // 方式二：指定字段名
+  { label: '状态', prop: 'status', select: true, disabledField: 'isDisabled', list: [...] },
+  // 方式三：固定布尔值
+  { label: '备注', prop: 'remark', input: true, disabled: true },
 
   // 插槽列（推荐：直接传插槽名）
   { label: '操作', prop: 'action', slot: 'action' },
@@ -248,6 +257,22 @@ tableData: [
 ::v-deep .el-table .rowRed {
   background-color: #f8d7da;
 }
+\`\`\`
+
+## 表单元素禁用控制
+
+表单类型列（select/input/checkbox/radio）支持动态禁用，有三种配置方式：
+
+\`\`\`javascript
+// 方式一：函数回调（推荐，最灵活）
+{ label: '数量', prop: 'count', input: true, disabled: (row) => row.status === 0 }
+
+// 方式二：指定行数据中的字段名
+{ label: '状态', prop: 'status', select: true, disabledField: 'isDisabled', list: [...] }
+// 行数据示例：{ status: 1, isDisabled: true }  // isDisabled 为 true 时禁用
+
+// 方式三：固定布尔值（全部禁用）
+{ label: '备注', prop: 'remark', input: true, disabled: true }
 \`\`\`
 
 ## 内置自定义排序

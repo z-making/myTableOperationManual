@@ -1,4 +1,4 @@
-import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as i}from"./index-Dve52W1L.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=l({__name:"basic",setup(m){const e=a.parse(`
+import{d as a}from"./github-markdown-CBpekFFP.js";import{d as l,c as t,a as o,u as n,o as r,_ as i}from"./index-BcRBNN3S.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=l({__name:"basic",setup(m){const e=a.parse(`
 # 基础用法
 
 本章节介绍 myTable 组件的各种基础功能和列类型配置。

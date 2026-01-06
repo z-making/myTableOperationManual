@@ -1,4 +1,4 @@
-import{d as t}from"./github-markdown-CBpekFFP.js";import{d as a,c as l,a as o,u as r,o as n,_ as i}from"./index-Dve52W1L.js";const u={class:"markdown-body",style:{padding:"20px"}},s=["innerHTML"],p=a({__name:"vue2",setup(c){const e=t.parse(`
+import{d as t}from"./github-markdown-CBpekFFP.js";import{d as l,c as a,a as o,u as r,o as n,_ as i}from"./index-BcRBNN3S.js";const s={class:"markdown-body",style:{padding:"20px"}},u=["innerHTML"],p=l({__name:"vue2",setup(c){const e=t.parse(`
 # Vue 2 版本使用文档
 
 myTableVue2 是专为 Vue 2 + Element UI 项目设计的通用表格组件。
@@ -77,6 +77,7 @@ export default {
 | imgHeight | 图片高度 | String | '0.2rem' |
 | rowConditionChangeColorArr | 行条件高亮配置 | Array | [] |
 | paginationClass | 分页容器自定义类名 | String | '' |
+| loading | 是否显示加载中 | Boolean | false |
 
 ## 主要事件 Events
 
@@ -151,6 +152,14 @@ tableColumn: [
   { label: '性别', prop: 'gender', radio: true,
     list: [{ label: '男', value: 1 }, { label: '女', value: 2 }],
     radioInput: (val, row) => { console.log('选中:', val) } },
+
+  // 表单元素禁用（适用于 select/input/checkbox/radio）
+  // 方式一：函数回调（推荐）
+  { label: '数量', prop: 'count', input: true, disabled: (row) => row.status === 0 },
+  // 方式二：指定字段名
+  { label: '状态', prop: 'status', select: true, disabledField: 'isDisabled', list: [...] },
+  // 方式三：固定布尔值
+  { label: '备注', prop: 'remark', input: true, disabled: true },
 
   // 插槽列（推荐：直接传插槽名）
   { label: '操作', prop: 'action', slot: 'action' },
@@ -240,6 +249,22 @@ tableData: [
 }
 \`\`\`
 
+## 表单元素禁用控制
+
+表单类型列（select/input/checkbox/radio）支持动态禁用，有三种配置方式：
+
+\`\`\`javascript
+// 方式一：函数回调（推荐，最灵活）
+{ label: '数量', prop: 'count', input: true, disabled: (row) => row.status === 0 }
+
+// 方式二：指定行数据中的字段名
+{ label: '状态', prop: 'status', select: true, disabledField: 'isDisabled', list: [...] }
+// 行数据示例：{ status: 1, isDisabled: true }  // isDisabled 为 true 时禁用
+
+// 方式三：固定布尔值（全部禁用）
+{ label: '备注', prop: 'remark', input: true, disabled: true }
+\`\`\`
+
 ## 内置自定义排序
 
 当列配置 \`isCustomSort: true\` 时，使用内置排序逻辑：
@@ -261,4 +286,4 @@ tableData: [
 | 行点击事件 | \`@row-click\` | \`@rowClick\` |
 | 图标写法 | \`el-icon-question\` 类名 | \`<el-icon><QuestionFilled /></el-icon>\` 组件形式 |
 
-`);return(b,m)=>(n(),l("div",u,[o("div",{innerHTML:r(e)},null,8,s)]))}}),C=i(p,[["__scopeId","data-v-582b6630"]]);export{C as default};
+`);return(d,b)=>(n(),a("div",s,[o("div",{innerHTML:r(e)},null,8,u)]))}}),C=i(p,[["__scopeId","data-v-d3897c00"]]);export{C as default};
